@@ -36,7 +36,7 @@ resource "aws_vpc_endpoint" "this" {
   auto_accept       = try(each.value.auto_accept, null)
 
   security_group_ids  = try(each.value.service_type, "Interface") == "Interface" ? length(distinct(concat(local.security_group_ids, lookup(each.value, "security_group_ids", [])))) > 0 ? distinct(concat(local.security_group_ids, lookup(each.value, "security_group_ids", []))) : null : null
-  subnet_ids          = try(each.value.service_type, "Interface") == "Interface" ? distinct(concat(var.subnet_ids, lookup(each.value, "subnet_ids", []))) : null
+  subnet_ids          = contains(["Interface", "GatewayLoadBalancer"], try(each.value.service_type, "Interface")) ? distinct(concat(try(each.value.service_type, "Interface") == "Interface" ? var.subnet_ids : [], lookup(each.value, "subnet_ids", []))) : null
   route_table_ids     = try(each.value.service_type, "Interface") == "Gateway" ? lookup(each.value, "route_table_ids", null) : null
   policy              = try(each.value.policy, null)
   private_dns_enabled = try(each.value.service_type, "Interface") == "Interface" ? try(each.value.private_dns_enabled, null) : null
