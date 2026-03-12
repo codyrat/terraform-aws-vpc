@@ -202,7 +202,7 @@ resource "aws_route_table_association" "public" {
 }
 
 resource "aws_route" "public_internet_gateway" {
-  count = local.create_public_subnets && var.create_igw ? local.num_public_route_tables : 0
+  count = local.create_public_subnets && var.create_igw && var.create_public_internet_gateway_route ? local.num_public_route_tables : 0
 
   region = var.region
 

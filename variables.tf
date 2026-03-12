@@ -1194,6 +1194,12 @@ variable "create_igw" {
   default     = true
 }
 
+variable "create_public_internet_gateway_route" {
+  description = "Controls if a default 0.0.0.0/0 route to the IGW is created on public route tables. Set to false to manage public routes externally."
+  type        = bool
+  default     = true
+}
+
 variable "create_egress_only_igw" {
   description = "Controls if an Egress Only Internet Gateway is created and its related routes"
   type        = bool
